@@ -1,24 +1,56 @@
+# Python
 venv/
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 .Python
+
+# Environment variables
 .env
 .env.local
 .env.production
+.env.docker
+server/.env
+frontend/.env
+
+# Databases
 *.db
 *.sqlite3
+
+# Logs
 *.log
 logs/
+
+# OS files
 .DS_Store
 Thumbs.db
+
+# IDEs
 .vscode/
 .idea/
+
+# Build files
 dist/
 build/
 *.egg-info/
+
+# Node
 node_modules/
 .next/
-frontend/.env
+
+# Redis
 dump.rdb
+
+# Docker / Images / Archives
+*.tar
+*.tar.gz
+*.img
+
+# Database dumps
+*.sql
+*.dump
+
+# Docker volumes (local only)
+postgres_data/
+redis_data/

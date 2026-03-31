@@ -21,15 +21,16 @@ async def routing_decision(state: dict) -> str:
     # Ensure feedback and drafts existed
     if not state.get("editor_feedback") or not state.get("drafts"):
         return "FAILED"
-    
-    # State string gets set in the Editor logic
+
+    # Fully approved — done
     if state["status"] == "APPROVED":
-        return "EXPORT" # End state or special export prep node
-        
+        return "EXPORT"
+
+    # Max iterations reached — accept best-effort result, don't mark as FAILED
     if state["iteration_count"] >= settings.MAX_EDITOR_ITERATIONS:
-        # FAILED due to too many iterations
-        return "FAILED"
-        
+        state["status"] = "APPROVED"  # Best-effort: content exists, make it retrievable
+        return "EXPORT"
+
     return "COPYWRITER"
 
 

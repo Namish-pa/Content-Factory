@@ -1,9 +1,11 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
-    GEMINI_API_KEY: str = ""
-    GEMINI_PRO_MODEL: str = "gemini-2.0-flash"
-    GEMINI_FLASH_MODEL: str = "gemini-2.0-flash"
+    GROQ_API_KEY: str = ""
+    # llama-3.3-70b-versatile for reasoning-heavy tasks (fact check, editor)
+    GROQ_PRO_MODEL: str = "llama-3.3-70b-versatile"
+    # llama-3.1-8b-instant for fast creative tasks (copywriter)
+    GROQ_FLASH_MODEL: str = "llama-3.1-8b-instant"
     DATABASE_URL: str = "postgresql+asyncpg://user:password@localhost:5432/campaigns"
     REDIS_URL: str = "redis://localhost:6379/0"
     MAX_EDITOR_ITERATIONS: int = 3
