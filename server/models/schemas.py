@@ -42,8 +42,8 @@ class FactSheet(BaseModel):
     technical_specs: Dict[str, Any]
     target_audience: List[str]
     value_proposition: str
-    pricing: Optional[Pricing] = None
-    ambiguous_statements: List[AmbiguousStatement] = Field(default_factory=list)
+    pricing: Optional[Pricing]
+    ambiguous_statements: List[AmbiguousStatement]
     constraints: Constraints
 
 # --- Content Drafts ---
@@ -62,9 +62,9 @@ class Issue(BaseModel):
 
 class EditorFeedback(BaseModel):
     status: Literal["APPROVED", "REJECTED"]
-    issues: List[Issue] = Field(default_factory=list)
+    issues: List[Issue]
     correction_note: str
-    iteration: int = 0
+    iteration: int
 
 # --- State Object for LangGraph ---
 

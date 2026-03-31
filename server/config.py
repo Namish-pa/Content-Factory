@@ -2,8 +2,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     GEMINI_API_KEY: str = ""
-    GEMINI_PRO_MODEL: str = "gemini-2.0-pro-exp"
-    GEMINI_FLASH_MODEL: str = "gemini-2.0-flash-exp"
+    GEMINI_PRO_MODEL: str = "gemini-2.0-flash"
+    GEMINI_FLASH_MODEL: str = "gemini-2.0-flash"
     DATABASE_URL: str = "postgresql+asyncpg://user:password@localhost:5432/campaigns"
     REDIS_URL: str = "redis://localhost:6379/0"
     MAX_EDITOR_ITERATIONS: int = 3
