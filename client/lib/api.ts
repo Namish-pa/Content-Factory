@@ -33,6 +33,13 @@ export async function startCampaign(rawText: string): Promise<StartCampaignRespo
   });
 }
 
+export async function saveDraft(rawText: string): Promise<StartCampaignResponse> {
+  return request<StartCampaignResponse>("/campaign/draft", {
+    method: "POST",
+    body: JSON.stringify({ raw_text: rawText }),
+  });
+}
+
 export async function listCampaigns(): Promise<CampaignListItem[]> {
   return request<CampaignListItem[]>("/campaign");
 }
@@ -67,6 +74,17 @@ export async function exportCampaign(campaignId: string): Promise<void> {
 
 export async function deleteCampaign(campaignId: string): Promise<void> {
   await request(`/campaign/${campaignId}`, { method: "DELETE" });
+}
+
+export async function renameCampaign(campaignId: string, name: string): Promise<void> {
+  await request(`/campaign/${campaignId}/rename`, {
+    method: "PUT",
+    body: JSON.stringify({ name }),
+  });
+}
+
+export async function startExistingCampaign(campaignId: string): Promise<void> {
+  await request(`/campaign/${campaignId}/start`, { method: "POST" });
 }
 
 // ---- WebSocket ----

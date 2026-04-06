@@ -8,9 +8,10 @@
 }
 
 .campaigns-page-header-text h1 {
-  font-family: var(--font-body);
+  font-family: var(--font-heading);
   font-size: 1.8rem;
   font-weight: 800;
+  letter-spacing: -0.02em;
   color: var(--text-primary);
   margin-bottom: var(--space-sm);
 }
@@ -35,14 +36,14 @@
   border: none;
   cursor: pointer;
   transition: all var(--transition-base);
-  box-shadow: 0 4px 20px rgba(79, 110, 247, 0.3);
+  box-shadow: 0 4px 20px rgba(235, 180, 100, 0.3);
   text-decoration: none;
   flex-shrink: 0;
 }
 
 .btn-new-campaign:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 28px rgba(79, 110, 247, 0.45);
+  box-shadow: 0 8px 28px rgba(235, 180, 100, 0.45);
 }
 
 .btn-new-campaign svg {
@@ -272,7 +273,7 @@
 
 .campaigns-table-head {
   display: grid;
-  grid-template-columns: 1fr 140px 200px 100px 80px;
+  grid-template-columns: 1fr 140px 200px 100px 100px;
   padding: 14px 24px;
   border-bottom: 1px solid var(--border-color);
   background: rgba(0, 0, 0, 0.2);
@@ -286,13 +287,16 @@
   color: var(--text-muted);
 }
 
+.campaigns-table-head span:nth-child(2),
+.campaigns-table-head span:nth-child(3),
+.campaigns-table-head span:nth-child(4),
 .campaigns-table-head span:last-child {
-  text-align: right;
+  text-align: center;
 }
 
 .campaign-row {
   display: grid;
-  grid-template-columns: 1fr 140px 200px 100px 80px;
+  grid-template-columns: 1fr 140px 200px 100px 100px;
   padding: 18px 24px;
   align-items: center;
   border-bottom: 1px solid var(--border-color);
@@ -345,11 +349,32 @@
   color: #ef4444;
 }
 
+.campaign-icon.draft {
+  background: rgba(153, 174, 173, 0.1);
+  border: 1px solid rgba(153, 174, 173, 0.2);
+  color: var(--text-muted);
+}
+
 .campaign-info h4 {
   font-size: 0.88rem;
   font-weight: 600;
   color: var(--text-primary);
   margin-bottom: 2px;
+}
+
+.inline-edit-input {
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--accent-blue);
+  border-radius: var(--radius-sm);
+  padding: 2px 6px;
+  outline: none;
+  width: 100%;
+  margin-bottom: 2px;
+  box-shadow: 0 0 0 2px rgba(79, 110, 247, 0.2);
 }
 
 .campaign-info span {
@@ -397,10 +422,23 @@
   border: 1px solid rgba(239, 68, 68, 0.25);
 }
 
+.status-badge.draft {
+  background: rgba(153, 174, 173, 0.1);
+  color: var(--text-muted);
+  border: 1px solid rgba(153, 174, 173, 0.2);
+}
+
 .campaign-date {
   font-family: "JetBrains Mono", "Fira Code", monospace;
   font-size: 0.75rem;
   color: var(--text-secondary);
+  text-align: center;
+}
+
+.campaign-status-cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .campaign-output {
@@ -408,20 +446,21 @@
   font-size: 0.95rem;
   font-weight: 700;
   color: var(--accent-blue);
-  text-align: right;
+  text-align: center;
 }
 
 .campaign-output.zero {
   color: var(--text-muted);
 }
 
-/* Delete button */
+/* Action buttons */
 .campaign-actions-cell {
   display: flex;
   justify-content: center;
+  gap: 4px;
 }
 
-.btn-delete-campaign {
+.btn-action {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -435,10 +474,22 @@
   transition: all var(--transition-fast);
 }
 
-.btn-delete-campaign:hover {
+.btn-delete:hover {
   color: #ef4444;
   background: rgba(239, 68, 68, 0.1);
   border-color: rgba(239, 68, 68, 0.25);
+}
+
+.btn-edit:hover {
+  color: var(--accent-blue);
+  background: rgba(79, 110, 247, 0.1);
+  border-color: rgba(79, 110, 247, 0.25);
+}
+
+.btn-start:hover {
+  color: #22c55e;
+  background: rgba(34, 197, 94, 0.1);
+  border-color: rgba(34, 197, 94, 0.25);
 }
 
 /* Show more */

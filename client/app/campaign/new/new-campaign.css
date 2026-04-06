@@ -33,6 +33,7 @@
 }
 
 .new-campaign-topbar-links a {
+  position: relative;
   font-size: 0.85rem;
   color: var(--text-secondary);
   font-weight: 500;
@@ -40,8 +41,24 @@
   text-decoration: none;
 }
 
+.new-campaign-topbar-links a::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--gradient-primary);
+  border-radius: 1px;
+  transition: width var(--transition-base);
+}
+
 .new-campaign-topbar-links a:hover {
   color: var(--text-primary);
+}
+
+.new-campaign-topbar-links a:hover::after {
+  width: 100%;
 }
 
 .new-campaign-topbar-right {
@@ -121,10 +138,10 @@
 
 .new-campaign-copy h1 {
   font-family: var(--font-heading);
-  font-size: clamp(2rem, 3.5vw, 2.8rem);
-  font-weight: 400;
-  font-style: italic;
-  line-height: 1.2;
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
   color: var(--text-primary);
   margin-bottom: var(--space-xl);
 }
@@ -237,7 +254,7 @@
 
 .form-input:focus {
   border-color: var(--accent-blue);
-  box-shadow: 0 0 0 3px rgba(79, 110, 247, 0.1);
+  box-shadow: 0 0 0 3px rgba(235, 180, 100, 0.1);
 }
 
 .form-input-icon {
@@ -282,7 +299,7 @@
 
 .form-textarea:focus {
   border-color: var(--accent-blue);
-  box-shadow: 0 0 0 3px rgba(79, 110, 247, 0.1);
+  box-shadow: 0 0 0 3px rgba(235, 180, 100, 0.1);
 }
 
 /* Toggle row */
@@ -385,12 +402,12 @@
   border: none;
   cursor: pointer;
   transition: all var(--transition-base);
-  box-shadow: 0 4px 24px rgba(79, 110, 247, 0.3);
+  box-shadow: 0 4px 24px rgba(235, 180, 100, 0.3);
 }
 
 .btn-initialize:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(79, 110, 247, 0.45);
+  box-shadow: 0 8px 32px rgba(235, 180, 100, 0.45);
 }
 
 .btn-initialize:disabled {
@@ -466,11 +483,11 @@
 .file-dropzone:hover,
 .file-dropzone.dragging {
   border-color: var(--accent-blue);
-  background: rgba(79, 110, 247, 0.06);
+  background: rgba(235, 180, 100, 0.06);
 }
 
 .file-dropzone.dragging {
-  box-shadow: inset 0 0 30px rgba(79, 110, 247, 0.08);
+  box-shadow: inset 0 0 30px rgba(235, 180, 100, 0.08);
 }
 
 .dropzone-icon {

@@ -2,7 +2,7 @@
 
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { startCampaign } from "@/lib/api";
+import { startCampaign, saveDraft } from "@/lib/api";
 import "./new-campaign.css";
 
 interface UploadedFile {
@@ -26,11 +26,8 @@ export default function NewCampaignPage() {
     setIsSubmitting(true);
 
     try {
-      // Combine file contents + raw text into a single payload
-      const fileTexts = files.map((f) => `--- ${f.name} ---\n${f.content}`).join("\n\n");
-      const combined = [fileTexts, rawText].filter(Boolean).join("\n\n");
-
-      if (!combined.trim()) {
+      const combined = getCombinedContent();
+      if (!combined) {
         setError("Please provide source material via file upload or text input.");
         setIsSubmitting(false);
         return;
@@ -42,6 +39,34 @@ export default function NewCampaignPage() {
       setError(err instanceof Error ? err.message : "Failed to start campaign.");
       setIsSubmitting(false);
     }
+  };
+
+  const handleSaveDraft = async () => {
+    setError(null);
+    setIsSubmitting(true);
+
+    try {
+      const combined = getCombinedContent();
+      if (!combined) {
+        setError("Please provide source material to save a draft.");
+        setIsSubmitting(false);
+        return;
+      }
+
+      await saveDraft(combined);
+      // Small delay for UX then redirect
+      setTimeout(() => {
+        router.push("/dashboard");
+      }, 800);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to save draft.");
+      setIsSubmitting(false);
+    }
+  };
+
+  const getCombinedContent = () => {
+    const fileTexts = files.map((f) => `--- ${f.name} ---\n${f.content}`).join("\n\n");
+    return [fileTexts, rawText].filter(Boolean).join("\n\n").trim();
   };
 
   const handleFiles = (fileList: FileList) => {
@@ -109,9 +134,9 @@ export default function NewCampaignPage() {
         </div>
 
         <ul className="new-campaign-topbar-links">
-          <li><a href="/">Product</a></li>
+          <li><a href="/">Home</a></li>
+          <li><a href="/#product">Product</a></li>
           <li><a href="/dashboard">Dashboard</a></li>
-          <li><a href="#">Pricing</a></li>
         </ul>
 
         <div className="new-campaign-topbar-right">
@@ -327,8 +352,13 @@ export default function NewCampaignPage() {
                   "Initialize Campaign"
                 )}
               </button>
-              <button className="btn-save-draft" id="btn-save-draft">
-                Save Draft
+              <button 
+                className="btn-save-draft" 
+                id="btn-save-draft"
+                onClick={handleSaveDraft}
+                disabled={isSubmitting || (files.length === 0 && !rawText)}
+              >
+                {isSubmitting ? "Saving..." : "Save Draft"}
               </button>
             </div>
           </div>

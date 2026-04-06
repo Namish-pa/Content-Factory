@@ -16,6 +16,7 @@ class CampaignRecord(Base):
     __tablename__ = "campaigns"
 
     id: Mapped[str] = mapped_column(String, primary_key=True)
+    name: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     raw_input: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     source_url: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     
@@ -45,6 +46,7 @@ async def store_campaign_state(state: CampaignState):
                 record = CampaignRecord(id=state.campaign_id)
                 session.add(record)
             
+            record.name = state.name
             record.raw_input = state.raw_input
             record.source_url = state.source_url
             record.fact_sheet = state.fact_sheet.model_dump() if state.fact_sheet else None
@@ -73,4 +75,14 @@ async def delete_campaign(campaign_id: str) -> bool:
             if not record:
                 return False
             await session.delete(record)
+            return True
+
+async def rename_campaign(campaign_id: str, new_name: str) -> bool:
+    async with AsyncSessionLocal() as session:
+        async with session.begin():
+            record = await session.get(CampaignRecord, campaign_id)
+            if not record:
+                return False
+            record.name = new_name
+            record.updated_at = datetime.utcnow()
             return True

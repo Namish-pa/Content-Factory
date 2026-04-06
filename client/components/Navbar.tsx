@@ -12,18 +12,14 @@ export default function Navbar() {
 
         <ul className="navbar-links">
           <li>
-            <a href="#" className="active">
-              Product
+            <a href="/" className="active">
+              Home
             </a>
           </li>
           <li>
-            <a href="#">Solutions</a>
-          </li>
-          <li>
-            <a href="#">Pricing</a>
-          </li>
-          <li>
-            <a href="#">Docs</a>
+            <a href="#product">
+              Product
+            </a>
           </li>
         </ul>
 

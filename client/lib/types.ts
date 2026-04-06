@@ -77,6 +77,7 @@ export interface EditorFeedback {
 
 export interface CampaignState {
   campaign_id: string;
+  name?: string;
   raw_input: string | null;
   source_url: string | null;
   fact_sheet: FactSheet | null;
@@ -93,6 +94,7 @@ export interface CampaignState {
 
 export interface CampaignListItem {
   id: string;
+  name?: string;
   status: CampaignStatus;
   created_at: string;
   updated_at: string;

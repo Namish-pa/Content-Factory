@@ -8,37 +8,37 @@
 }
 
 :root {
-  /* Colors */
-  --bg-primary: #0a0b14;
-  --bg-secondary: #0f1019;
-  --bg-card: #12131f;
-  --bg-card-hover: #181a2a;
-  --bg-surface: #161826;
-  --bg-nav: rgba(10, 11, 20, 0.8);
+  /* Colors - Frosted Autumn Palette */
+  --bg-primary: #3D353C; /* Darkened Charcoal Purple */
+  --bg-secondary: #5A5059; /* Charcoal Purple */
+  --bg-card: rgba(146, 136, 127, 0.2); /* Stone Taupe with opacity */
+  --bg-card-hover: rgba(146, 136, 127, 0.4);
+  --bg-surface: #92887F; /* Stone Taupe */
+  --bg-nav: rgba(61, 53, 60, 0.85);
 
-  --text-primary: #e8ecf4;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
+  --text-primary: #D7EEF3; /* Ice Blue */
+  --text-secondary: #B8ADAB; /* Warm Grey/Mauve */
+  --text-muted: #92887F;
 
-  --accent-blue: #4f6ef7;
-  --accent-violet: #7c3aed;
-  --accent-purple: #a855f7;
-  --accent-pink: #ec4899;
-  --accent-cyan: #22d3ee;
+  --accent-blue: #EBB464; /* Honey Gold Accent */
+  --accent-violet: #B8ADAB;
+  --accent-purple: #92887F;
+  --accent-pink: #D7EEF3;
+  --accent-cyan: #D7EEF3;
 
-  --gradient-primary: linear-gradient(135deg, #4f6ef7 0%, #7c3aed 100%);
-  --gradient-hero: linear-gradient(135deg, #4f6ef7 0%, #a855f7 50%, #ec4899 100%);
+  --gradient-primary: linear-gradient(135deg, #EBB464 0%, #D49D4F 100%);
+  --gradient-hero: linear-gradient(135deg, #EBB464 0%, #D7EEF3 50%, #D49D4F 100%);
   --gradient-glow: radial-gradient(
     ellipse at 50% 0%,
-    rgba(79, 110, 247, 0.15) 0%,
-    transparent 60%
+    rgba(215, 238, 243, 0.15) 0%,
+    transparent 70%
   );
 
-  --border-color: rgba(148, 163, 184, 0.08);
-  --border-glow: rgba(79, 110, 247, 0.2);
+  --border-color: rgba(184, 173, 171, 0.15);
+  --border-glow: rgba(235, 180, 100, 0.35);
 
   /* Typography */
-  --font-heading: "Playfair Display", Georgia, serif;
+  --font-heading: var(--font-heading), "Outfit", sans-serif;
   --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
 
   /* Spacing */
@@ -323,12 +323,12 @@ button {
 .hero h1 {
   font-family: var(--font-heading);
   font-size: clamp(2.5rem, 5.5vw, 4rem);
-  font-weight: 400;
-  line-height: 1.15;
+  font-weight: 800;
+  line-height: 1.1;
   color: var(--text-primary);
   margin-bottom: var(--space-lg);
   animation: fadeInUp 0.8s ease forwards;
-  font-style: italic;
+  letter-spacing: -0.03em;
 }
 
 .hero-subtitle {
@@ -362,12 +362,12 @@ button {
   font-weight: 600;
   border-radius: var(--radius-full);
   transition: all var(--transition-base);
-  box-shadow: 0 4px 24px rgba(79, 110, 247, 0.3);
+  box-shadow: 0 4px 24px rgba(235, 180, 100, 0.3);
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(79, 110, 247, 0.45);
+  box-shadow: 0 8px 32px rgba(235, 180, 100, 0.45);
 }
 
 .btn-secondary {
@@ -403,9 +403,9 @@ button {
   inset: -2px;
   background: linear-gradient(
     135deg,
-    rgba(79, 110, 247, 0.3),
-    rgba(168, 85, 247, 0.1),
-    rgba(236, 72, 153, 0.2)
+    rgba(235, 180, 100, 0.4),
+    rgba(146, 136, 127, 0.2),
+    rgba(184, 173, 171, 0.3)
   );
   border-radius: var(--radius-lg);
   z-index: -1;
@@ -416,42 +416,59 @@ button {
   border-radius: var(--radius-lg);
   overflow: hidden;
   border: 1px solid var(--border-color);
-}
-
-.hero-image-dots {
+  background: var(--bg-card);
+  min-height: 400px;
   display: flex;
-  gap: 6px;
-  padding: 12px 16px;
-  background: rgba(0, 0, 0, 0.5);
-  border-bottom: 1px solid var(--border-color);
+  flex-direction: column;
 }
 
-.hero-image-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--text-muted);
-  opacity: 0.5;
+.hero-ui-mockup {
+  flex: 1;
+  padding: var(--space-2xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.02), transparent);
 }
 
-.hero-image-dot:first-child {
-  background: #ef4444;
-  opacity: 0.8;
-}
-.hero-image-dot:nth-child(2) {
-  background: #eab308;
-  opacity: 0.8;
-}
-.hero-image-dot:nth-child(3) {
-  background: #22c55e;
-  opacity: 0.8;
-}
-
-.hero-image-container img {
+.mockup-line {
+  height: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-full);
   width: 100%;
-  height: 400px;
-  object-fit: cover;
 }
+
+.mockup-line.short { width: 60%; }
+.mockup-line.medium { width: 85%; }
+
+.mockup-card {
+  background: rgba(235, 180, 100, 0.1);
+  border: 1px solid rgba(235, 180, 100, 0.2);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  animation: pulseGlow 3s infinite;
+}
+
+.mockup-card-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--accent-blue);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.mockup-cursor {
+  width: 2px;
+  height: 1.2em;
+  background: var(--accent-blue);
+  display: inline-block;
+  margin-left: 2px;
+  animation: fadeIn 0.8s infinite;
+}
+
 
 /* Hero Stats */
 .hero-stats {
@@ -503,8 +520,8 @@ button {
 }
 
 .hero-stat-badge.highlight {
-  background: rgba(79, 110, 247, 0.15);
-  border-color: rgba(79, 110, 247, 0.3);
+  background: rgba(235, 180, 100, 0.15);
+  border-color: rgba(235, 180, 100, 0.3);
   color: var(--accent-blue);
 }
 
@@ -533,8 +550,8 @@ button {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: rgba(79, 110, 247, 0.15);
-  border: 1px solid rgba(79, 110, 247, 0.4);
+  background: rgba(235, 180, 100, 0.15);
+  border: 1px solid rgba(235, 180, 100, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -557,8 +574,8 @@ button {
 .features-header h2 {
   font-family: var(--font-heading);
   font-size: clamp(1.8rem, 3.5vw, 2.5rem);
-  font-weight: 400;
-  font-style: italic;
+  font-weight: 800;
+  letter-spacing: -0.02em;
   color: var(--text-primary);
 }
 
@@ -604,8 +621,8 @@ button {
   width: 44px;
   height: 44px;
   border-radius: var(--radius-md);
-  background: rgba(79, 110, 247, 0.1);
-  border: 1px solid rgba(79, 110, 247, 0.2);
+  background: rgba(235, 180, 100, 0.1);
+  border: 1px solid rgba(235, 180, 100, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -644,8 +661,8 @@ button {
 .scale-text h2 {
   font-family: var(--font-heading);
   font-size: clamp(1.8rem, 3.5vw, 2.5rem);
-  font-weight: 400;
-  font-style: italic;
+  font-weight: 800;
+  letter-spacing: -0.02em;
   color: var(--text-primary);
   margin-bottom: var(--space-lg);
 }
@@ -675,8 +692,8 @@ button {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: rgba(79, 110, 247, 0.1);
-  border: 1px solid rgba(79, 110, 247, 0.3);
+  background: rgba(235, 180, 100, 0.1);
+  border: 1px solid rgba(235, 180, 100, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;

@@ -70,6 +70,7 @@ class EditorFeedback(BaseModel):
 
 class CampaignState(BaseModel):
     campaign_id: str
+    name: Optional[str] = None
     raw_input: Optional[str] = None
     source_url: Optional[str] = None
     fact_sheet: Optional[FactSheet] = None

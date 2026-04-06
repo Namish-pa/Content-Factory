@@ -6,9 +6,8 @@ export default function TopBar() {
           Obsidian <span>Factory</span>
         </div>
         <ul className="topbar-links">
-          <li><a href="#">Product</a></li>
-          <li><a href="#">Solutions</a></li>
-          <li><a href="#">Pricing</a></li>
+          <li><a href="/">Home</a></li>
+          <li><a href="/#product">Product</a></li>
         </ul>
       </div>
 

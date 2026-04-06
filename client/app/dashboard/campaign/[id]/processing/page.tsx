@@ -30,6 +30,13 @@ const STATUS_TO_STEP_INDEX: Record<string, number> = {
   FAILED: -1,
 };
 
+const AGENT_TO_STEP_INDEX: Record<string, number> = {
+  "Ingestion": 0,
+  "FactCheck": 1,
+  "Copywriter": 2,
+  "Editor": 3,
+};
+
 function getTimeStr(): string {
   const d = new Date();
   return d.toLocaleTimeString("en-US", { hour12: false });
@@ -135,6 +142,17 @@ export default function ProcessingPage() {
         switch (event.type) {
           case "AGENT_STATUS":
             addLog("action", `[${event.agent}] ${event.message || event.status || "Processing..."}`);
+            if (event.agent && AGENT_TO_STEP_INDEX[event.agent] !== undefined) {
+              const agentIdx = AGENT_TO_STEP_INDEX[event.agent];
+              setSteps((prev) =>
+                prev.map((step, i) => ({
+                  ...step,
+                  status: i < agentIdx ? "completed" as const
+                    : i === agentIdx ? "active" as const
+                    : "pending" as const,
+                }))
+              );
+            }
             break;
           case "CAMPAIGN_STATUS":
             addLog("info", `Pipeline status: ${event.status || event.message || ""}`);
