@@ -17,10 +17,10 @@ The Autonomous Content Factory is a high-performance, enterprise-grade content g
 ### Backend
 - **API**: [FastAPI](https://fastapi.tiangolo.com/) (Python 3.12+)
 - **Orchestration**: [LangGraph](https://www.langchain.com/langgraph) (Stateful multi-agent workflows)
-- **LLMs**: Google Gemini Pro (via `google-generativeai`)
+- **LLMs**: [Groq](https://groq.com/) (Llama 3.3 70B & Llama 3.1 8B)
 - **Database**: PostgreSQL (with [SQLAlchemy 2.0](https://www.sqlalchemy.org/) + `asyncpg`)
 - **Real-time**: WebSockets for live pipeline tracking
-- **Cache/Pub-Sub**: Redis
+- **Cache/Pub-Sub**: Redis (Default port: 6379)
 
 ---
 
@@ -59,7 +59,9 @@ The Autonomous Content Factory is a high-performance, enterprise-grade content g
    ```env
    DATABASE_URL=postgresql+asyncpg://user:password@localhost/dbname
    REDIS_URL=redis://localhost:6379
-   GOOGLE_API_KEY=your_gemini_api_key
+   GROQ_API_KEY=your_groq_api_key
+   GROQ_PRO_MODEL=llama-3.3-70b-versatile
+   GROQ_FLASH_MODEL=llama-3.1-8b-instant
    ```
 4. Run the server:
    ```bash
