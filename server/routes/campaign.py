@@ -5,7 +5,7 @@ from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 
 from models.schemas import CampaignState, CampaignStatus
-from db.database import get_db_campaign_state, store_campaign_state
+from db.database import get_db_campaign_state, store_campaign_state, list_all_campaigns, delete_campaign
 from services.campaign_service import run_campaign_pipeline_bg
 from services.export_service import create_export_archive
 
@@ -17,6 +17,22 @@ class StartRequest(BaseModel):
 
 class RegenerateRequest(BaseModel):
     channel: str # e.g. "blog", "thread", "email"
+
+@router.get("")
+async def get_all_campaigns():
+    records = await list_all_campaigns()
+    return [
+        {
+            "id": r.id,
+            "status": r.status,
+            "created_at": r.created_at.isoformat() if r.created_at else None,
+            "updated_at": r.updated_at.isoformat() if r.updated_at else None,
+            "raw_input_preview": (r.raw_input[:120] + "...") if r.raw_input and len(r.raw_input) > 120 else r.raw_input,
+            "error_message": r.error_message,
+            "iteration_count": r.iteration_count,
+        }
+        for r in records
+    ]
 
 @router.post("/start")
 async def start_campaign(req: StartRequest, bg_tasks: BackgroundTasks):
@@ -92,3 +108,10 @@ async def export_campaign(campaign_id: str):
         media_type="application/zip",
         headers={"Content-Disposition": f"attachment; filename=campaign_{campaign_id}.zip"}
     )
+
+@router.delete("/{campaign_id}")
+async def delete_campaign_route(campaign_id: str):
+    deleted = await delete_campaign(campaign_id)
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Campaign not found")
+    return {"message": "Campaign deleted", "campaign_id": campaign_id}

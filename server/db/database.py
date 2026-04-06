@@ -4,7 +4,7 @@ from typing import Optional, Dict, Any
 
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 from sqlalchemy.orm import declarative_base, Mapped, mapped_column
-from sqlalchemy import String, Integer, DateTime, Enum as SAEnum
+from sqlalchemy import String, Integer, DateTime, Enum as SAEnum, select
 from sqlalchemy.dialects.postgresql import JSONB
 
 from config import settings
@@ -58,3 +58,19 @@ async def store_campaign_state(state: CampaignState):
 async def get_db_campaign_state(campaign_id: str) -> Optional[CampaignRecord]:
     async with AsyncSessionLocal() as session:
         return await session.get(CampaignRecord, campaign_id)
+
+async def list_all_campaigns() -> list[CampaignRecord]:
+    async with AsyncSessionLocal() as session:
+        result = await session.execute(
+            select(CampaignRecord).order_by(CampaignRecord.created_at.desc())
+        )
+        return list(result.scalars().all())
+
+async def delete_campaign(campaign_id: str) -> bool:
+    async with AsyncSessionLocal() as session:
+        async with session.begin():
+            record = await session.get(CampaignRecord, campaign_id)
+            if not record:
+                return False
+            await session.delete(record)
+            return True
