@@ -1,7 +1,5 @@
 # F.A.C.T.S. (Feature Analysis & Content Transformation System)
 
-![Hero Image](client/public/hero.png)
-
 ## The Problem
 Marketing teams and content creators face the significant challenge of quickly transforming complex raw source material into high-quality, multi-channel campaigns without hallucinating facts or losing brand consistency. Manual drafting, fact-checking, and iterative editing across various platforms is highly time-consuming, expensive, and alarmingly prone to systemic human error.
 
