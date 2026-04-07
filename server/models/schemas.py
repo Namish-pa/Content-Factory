@@ -75,7 +75,7 @@ class CampaignState(BaseModel):
     source_url: Optional[str] = None
     fact_sheet: Optional[FactSheet] = None
     drafts: Optional[ContentDrafts] = None
-    editor_feedback: Dict[str, EditorFeedback] = Field(default_factory=lambda: {"blog": None, "thread": None, "email": None})
+    editor_feedback: Dict[str, Optional[EditorFeedback]] = Field(default_factory=lambda: {"blog": None, "thread": None, "email": None})
     status: CampaignStatus = CampaignStatus.INIT
     iteration_count: int = 0
     error_message: Optional[str] = None

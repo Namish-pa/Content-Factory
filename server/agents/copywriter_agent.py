@@ -1,5 +1,6 @@
 import asyncio
 import structlog
+import bleach
 from groq import AsyncGroq
 from typing import Dict, Any, List
 from tenacity import retry, wait_exponential, stop_after_attempt
@@ -26,7 +27,8 @@ The value proposition MUST be the hero of the post.
             messages=[{"role": "user", "content": prompt}],
             temperature=0.7,
         )
-        return response.choices[0].message.content
+        raw_output = response.choices[0].message.content
+        return bleach.clean(raw_output)
 
     @retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=2, min=5, max=60))
     async def generate_thread(self, facts_json: str, feedback: str = "") -> List[str]:
@@ -47,7 +49,7 @@ Format your response simply as lines starting with "1.", "2.", etc."""
         lines = [line.strip() for line in text.split("\n") if line.strip() and line[0].isdigit()]
         if not lines:
             lines = [p.strip() for p in text.split("\n\n") if p.strip()][:5]
-        return lines
+        return [bleach.clean(line) for line in lines]
 
     @retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=2, min=5, max=60))
     async def generate_email(self, facts_json: str, feedback: str = "") -> str:
@@ -62,7 +64,8 @@ The value proposition MUST be the hero of the post.
             messages=[{"role": "user", "content": prompt}],
             temperature=0.6,
         )
-        return response.choices[0].message.content
+        raw_output = response.choices[0].message.content
+        return bleach.clean(raw_output)
 
     async def run(self, state_dict: dict) -> dict:
         logger.info("Copywriter Agent generating in parallel via Groq...")

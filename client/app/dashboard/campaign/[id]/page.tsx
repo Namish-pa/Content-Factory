@@ -206,6 +206,8 @@ export default function CampaignResultPage() {
           drafts={campaign?.drafts || null}
           factSheet={campaign?.fact_sheet || null}
           editorFeedback={campaign?.editor_feedback || null}
+          rawInput={campaign?.raw_input || null}
+          sourceUrl={campaign?.source_url || null}
         />
         <PerformancePanel
           editorFeedback={campaign?.editor_feedback || null}

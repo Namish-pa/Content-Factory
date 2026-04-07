@@ -38,12 +38,32 @@ async def run_campaign_pipeline_bg(campaign_id: str):
         
         # Publish final success event (the nodes have handled the intermediate states DB syncing)
         final_state_db = await get_db_campaign_state(campaign_id)
-        if final_state_db and final_state_db.status == CampaignStatus.APPROVED:
-            await publish_event(WSEvent(
-                type="COMPLETE", 
-                campaign_id=campaign_id,
-                message="Campaign approved and completed successfully."
-            ))
+        
+        from config import settings
+        
+        if final_state_db:
+            if final_state_db.status == CampaignStatus.APPROVED or final_state_db.iteration_count >= settings.MAX_EDITOR_ITERATIONS:
+                # If stopped by max iterations fail-safe, ensure the DB correctly reflects the APPROVED status
+                if final_state_db.status != CampaignStatus.APPROVED:
+                    final_pydantic_state = CampaignState(
+                        campaign_id=final_state_db.id,
+                        name=final_state_db.name,
+                        raw_input=final_state_db.raw_input,
+                        source_url=final_state_db.source_url,
+                        fact_sheet=final_state_db.fact_sheet,
+                        drafts=final_state_db.drafts,
+                        editor_feedback=final_state_db.editor_feedback or {},
+                        status=CampaignStatus.APPROVED,
+                        iteration_count=final_state_db.iteration_count,
+                        error_message=final_state_db.error_message
+                    )
+                    await store_campaign_state(final_pydantic_state)
+
+                await publish_event(WSEvent(
+                    type="COMPLETE", 
+                    campaign_id=campaign_id,
+                    message="Campaign approved and completed successfully."
+                ))
             
     except Exception as e:
         logger.error(f"[{campaign_id}] Graph execution failed: {str(e)}", exc_info=True)

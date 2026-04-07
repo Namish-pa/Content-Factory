@@ -2,14 +2,17 @@
 
 import { useState } from "react";
 import type { ContentDrafts, FactSheet, EditorFeedback } from "@/lib/types";
+import ResponsivePreview from "@/components/campaign/ResponsivePreview";
 
 interface ContentViewerProps {
   drafts: ContentDrafts | null;
   factSheet: FactSheet | null;
   editorFeedback: Record<string, EditorFeedback | null> | null;
+  rawInput?: string | null;
+  sourceUrl?: string | null;
 }
 
-type TabKey = "blog" | "thread" | "email" | "factsheet" | "feedback";
+type TabKey = "blog" | "thread" | "email" | "factsheet" | "feedback" | "preview" | "source";
 
 function handleSendEmail(subject: string, body: string) {
   const mailto = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
@@ -32,10 +35,12 @@ function SendEmailButton({ subject, body }: { subject: string; body: string }) {
   );
 }
 
-export default function ContentViewer({ drafts, factSheet, editorFeedback }: ContentViewerProps) {
-  const [activeTab, setActiveTab] = useState<TabKey>(drafts?.blog ? "blog" : "feedback");
+export default function ContentViewer({ drafts, factSheet, editorFeedback, rawInput, sourceUrl }: ContentViewerProps) {
+  const [activeTab, setActiveTab] = useState<TabKey>(drafts?.blog ? "source" : "feedback");
 
   const tabs: { key: TabKey; label: string }[] = [
+    { key: "source", label: "Source Input" },
+    { key: "preview", label: "Visual Preview" },
     { key: "blog", label: "Blog Draft" },
     { key: "email", label: "Email Draft" },
     { key: "thread", label: "Thread Draft" },
@@ -407,6 +412,52 @@ export default function ContentViewer({ drafts, factSheet, editorFeedback }: Con
                 </p>
               </div>
             </>
+          )}
+        </div>
+      )}
+
+      {/* ─── Visual Preview Tab ─── */}
+      {activeTab === "preview" && (
+        <div style={{ marginTop: "1rem", borderRadius: "10px", border: "1px solid var(--border-color)", overflow: "hidden", background: "var(--bg-card)" }}>
+          <ResponsivePreview 
+            blogContent={drafts?.blog}
+            socialThread={drafts?.thread}
+            emailContent={drafts?.email}
+            isGenerating={overallStatus === "REJECTED"}
+          />
+        </div>
+      )}
+
+      {/* ─── Source Input Tab ─── */}
+      {activeTab === "source" && (
+        <div className="editor-body" style={{ borderRadius: "var(--radius-md)", border: "1px solid var(--border-color)" }}>
+          <div className="editor-body-header">
+            <h2>Source Input</h2>
+          </div>
+          {sourceUrl && (
+            <div style={{ marginBottom: "1.5rem", padding: "1rem", background: "rgba(255,255,255,0.02)", borderRadius: "8px", borderLeft: "3px solid var(--accent-blue)" }}>
+              <strong style={{ color: "var(--text-secondary)" }}>Source URL: </strong>
+              <a href={sourceUrl} target="_blank" rel="noreferrer" style={{ color: "var(--accent-blue)", textDecoration: "underline" }}>
+                {sourceUrl}
+              </a>
+            </div>
+          )}
+          {rawInput ? (
+            <div style={{
+              whiteSpace: "pre-wrap", 
+              lineHeight: 1.8, 
+              padding: "1.5rem", 
+              background: "rgba(0,0,0,0.2)", 
+              borderRadius: "8px",
+              fontFamily: "var(--font-body)",
+              fontSize: "0.95rem"
+            }}>
+              {rawInput}
+            </div>
+          ) : (
+             <div className="loading-state">
+              <p>No raw text input was provided for this campaign.</p>
+            </div>
           )}
         </div>
       )}

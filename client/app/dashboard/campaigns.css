@@ -102,6 +102,36 @@
   gap: var(--space-sm);
   height: 100%;
   justify-content: flex-end;
+  position: relative;
+}
+
+.chart-bar-group::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-5px);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-family: var(--font-body);
+  white-space: pre-wrap;
+  text-align: center;
+  line-height: 1.4;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.2s ease;
+  z-index: 20;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  min-width: max-content;
+}
+
+.chart-bar-group:hover::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-10px);
 }
 
 .chart-bar {

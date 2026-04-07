@@ -41,11 +41,15 @@ function getStatusIcon(status: CampaignStatus): string {
 
 function formatDate(iso: string | null): string {
   if (!iso) return "—";
-  const d = new Date(iso);
+  // Append 'Z' to naive timestamps from Python so JS treats them correctly as UTC
+  const safeIso = iso.endsWith("Z") || iso.includes("+") ? iso : `${iso}Z`;
+  const d = new Date(safeIso);
   return d.toLocaleDateString("en-US", {
     month: "short", day: "numeric", year: "numeric",
+    timeZone: "Asia/Kolkata"
   }) + " · " + d.toLocaleTimeString("en-US", {
-    hour: "2-digit", minute: "2-digit",
+    hour: "2-digit", minute: "2-digit", timeZoneName: "short",
+    timeZone: "Asia/Kolkata"
   });
 }
 
@@ -67,18 +71,10 @@ function getCampaignLink(c: CampaignListItem): string {
   return `/dashboard/campaign/${c.id}`;
 }
 
-const chartBars = [
-  { height: 45, active: false },
-  { height: 55, active: false },
-  { height: 35, active: false },
-  { height: 70, active: false },
-  { height: 90, active: true },
-  { height: 80, active: false },
-  { height: 50, active: false },
-  { height: 40, active: false },
-  { height: 60, active: false },
-  { height: 30, active: false },
-];
+// Token estimator constants
+const TOKENS_PER_FACT_CHECK = 1500; // 70B
+const TOKENS_PER_COPYWRITER_ITERATION = 1600; // 8B
+const TOKENS_PER_EDITOR_ITERATION = 2100; // 70B
 
 export default function CampaignsPage() {
   const router = useRouter();
@@ -93,6 +89,51 @@ export default function CampaignsPage() {
     loadCampaigns();
   }, []);
 
+  // Calculate estimated tokens grouped by Day of the Week
+  const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+  const terminalCampaigns = campaigns.filter((c) =>
+    [CampaignStatus.APPROVED, CampaignStatus.FAILED, CampaignStatus.INIT].includes(c.status)
+  );
+
+  const dailyTokens = weekdays.map((dayName, index) => {
+    // Filter campaigns by comparing their day of the week strictly in IST
+    const dayCampaigns = terminalCampaigns.filter((c) => {
+      // Append 'Z' to naive timestamps to parse as UTC
+      const safeIso = c.created_at.endsWith("Z") || c.created_at.includes("+") ? c.created_at : `${c.created_at}Z`;
+      const cDate = new Date(safeIso);
+      const istDayStr = new Intl.DateTimeFormat("en-US", {
+        weekday: "short",
+        timeZone: "Asia/Kolkata"
+      }).format(cDate);
+      return istDayStr === dayName;
+    });
+
+    let proTokens = 0;
+    let flashTokens = 0;
+
+    dayCampaigns.forEach((c) => {
+      proTokens += TOKENS_PER_FACT_CHECK;
+      const iters = Math.max(1, c.iteration_count || 1);
+      flashTokens += iters * TOKENS_PER_COPYWRITER_ITERATION;
+      proTokens += iters * TOKENS_PER_EDITOR_ITERATION;
+    });
+
+    const totalTokens = proTokens + flashTokens;
+
+    return {
+      date: dayName,
+      pro: proTokens,
+      flash: flashTokens,
+      total: totalTokens,
+      tooltip: totalTokens > 0
+        ? `~${totalTokens.toLocaleString()}`
+        : `~0`,
+    };
+  });
+
+  const maxTokens = Math.max(...dailyTokens.map((d) => d.total), 1);
+
   const loadCampaigns = async () => {
     try {
       setLoading(true);
@@ -106,11 +147,7 @@ export default function CampaignsPage() {
     }
   };
 
-  const filteredCampaigns = campaigns.filter((c) => {
-    // Only show terminal states (Completed or Failed) OR Drafts (INIT) in the Recent Activity list
-    const isVisible = [CampaignStatus.APPROVED, CampaignStatus.FAILED, CampaignStatus.INIT].includes(c.status);
-    if (!isVisible) return false;
-
+  const filteredCampaigns = terminalCampaigns.filter((c) => {
     if (!filter) return true;
     const search = filter.toLowerCase();
     return (
@@ -120,10 +157,8 @@ export default function CampaignsPage() {
     );
   });
 
-  const completedCount = campaigns.filter((c) => c.status === CampaignStatus.APPROVED).length;
-  const activeCount = campaigns.filter((c) =>
-    ![CampaignStatus.APPROVED, CampaignStatus.FAILED].includes(c.status)
-  ).length;
+  const completedCount = terminalCampaigns.filter((c) => c.status === CampaignStatus.APPROVED).length;
+  const activeCount = terminalCampaigns.filter((c) => c.status === CampaignStatus.INIT).length;
 
   const handleDelete = async (e: React.MouseEvent, campaignId: string) => {
     e.preventDefault();
@@ -207,46 +242,60 @@ export default function CampaignsPage() {
 
       {/* Stats Row */}
       <div className="campaigns-stats-row">
-        {/* Throughput Chart */}
+        {/* Estimated Token Usage Chart */}
         <div className="throughput-card">
-          <div className="throughput-header">
-            <span className="throughput-dot" />
-            Active Engine Throughput
+          <div className="throughput-header" style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
+            <div>
+              <span className="throughput-dot" style={{ background: "var(--accent-blue)" }} />
+              Estimated Token Usage
+            </div>
+            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+              <span style={{ color: "var(--accent-blue)", marginRight: "8px" }}>■ 70B PRO</span>
+              <span style={{ color: "var(--accent-violet)" }}>■ 8B FLASH</span>
+            </div>
           </div>
-          <div className="throughput-chart">
-            {chartBars.map((bar, i) => (
-              <div className="chart-bar-group" key={i}>
+          <div className="throughput-chart" style={{ alignItems: 'flex-end', display: 'flex', gap: '8px' }}>
+            {dailyTokens.map((day, i) => (
+              <div className="chart-bar-group" data-tooltip={day.tooltip} key={i} style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', height: '100%', gap: '2px' }}>
                 <div
-                  className={`chart-bar ${bar.active ? "active" : ""}`}
-                  style={{ height: `${bar.height}%` }}
+                  className="chart-bar"
+                  title={`70B PRO: ${day.pro.toLocaleString()} tokens`}
+                  style={{ 
+                    height: `${(day.pro / maxTokens) * 100}%`, 
+                    background: "var(--accent-blue)", 
+                    borderRadius: "4px 4px 0 0",
+                    opacity: day.total > 0 ? 0.8 : 0.1,
+                    minHeight: day.pro > 0 ? '4px' : '0'
+                  }}
+                />
+                <div
+                  className="chart-bar"
+                  title={`8B FLASH: ${day.flash.toLocaleString()} tokens`}
+                  style={{ 
+                    height: `${(day.flash / maxTokens) * 100}%`, 
+                    background: "var(--accent-violet)",
+                    borderRadius: "0 0 4px 4px",
+                    opacity: day.total > 0 ? 0.8 : 0.1,
+                    minHeight: day.flash > 0 ? '4px' : '0'
+                  }}
                 />
               </div>
             ))}
           </div>
-          <div className="chart-labels">
-            <span className="chart-label">00:00</span>
-            <span className="chart-label">06:00</span>
-            <span className="chart-label">12:00</span>
-            <span className="chart-label">18:00</span>
-            <span className="chart-label">NOW</span>
+          <div className="chart-labels" style={{ display: 'flex', justifyContent: 'space-between', marginTop: '10px' }}>
+            {dailyTokens.map((day, i) => (
+              <span key={i} className="chart-label" style={{ flex: 1, textAlign: 'center' }}>{day.date}</span>
+            ))}
           </div>
         </div>
 
         {/* Total Output */}
         <div className="total-output-card">
           <span className="total-output-label">Total Campaigns</span>
-          <span className="total-output-value">{campaigns.length}</span>
+          <span className="total-output-value">{terminalCampaigns.length}</span>
           <span className="total-output-change">
-            {completedCount} completed · {activeCount} active
+            {completedCount} completed · {activeCount} drafts
           </span>
-          <div className="total-output-avatars">
-            <div className="avatar-stack">
-              <div className="avatar-circle a1" />
-              <div className="avatar-circle a2" />
-              <div className="avatar-circle a3" />
-              <div className="avatar-more">+{Math.max(0, campaigns.length - 3)}</div>
-            </div>
-          </div>
         </div>
       </div>
 
