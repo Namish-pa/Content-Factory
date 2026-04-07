@@ -32,6 +32,12 @@ Key features include:
   <em>Live Telemetry Dashboard</em>
 </p>
 
+<p align="center">
+  <img src="client/public/screenshot-campaign.png" alt="Campaign Details" width="800"/>
+  <br/>
+  <em>Individual Campaign Details</em>
+</p>
+
 ## Tech Stack
 * **Programming languages:** Python 3.12+, TypeScript, JavaScript, HTML, CSS
 * **Frameworks:** React, Next.js 15+ App Router, FastAPI
