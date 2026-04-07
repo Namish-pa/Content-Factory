@@ -12,14 +12,14 @@ logger = structlog.get_logger(__name__)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup
-    logger.info("Initializing Autonomous Content Factory DB...")
+    logger.info("Initializing F.A.C.T.S DB...")
     await init_db()
     yield
     # Shutdown
-    logger.info("Shutting down Autonomous Content Factory...")
+    logger.info("Shutting down F.A.C.T.S...")
 
 app = FastAPI(
-    title="Autonomous Content Factory",
+    title="F.A.C.T.S",
     description="LangGraph orchestrated pipeline for content generation.",
     lifespan=lifespan
 )
@@ -39,5 +39,5 @@ app.include_router(websocket.router)
 
 @app.get("/")
 def read_root():
-    return {"status": "ok", "message": "Autonomous Content Factory Server Running"}
+    return {"status": "ok", "message": "F.A.C.T.S Server Running"}
 

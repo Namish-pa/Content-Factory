@@ -219,7 +219,7 @@ export default function CampaignResultPage() {
       {/* Dashboard Footer */}
       <footer className="dashboard-footer">
         <span className="dashboard-footer-copy">
-          © 2024 Obsidian Intelligence. All rights reserved.
+          © 2024 F.A.C.T.S. Team. All rights reserved.
         </span>
         <ul className="dashboard-footer-links">
           <li><a href="#">Privacy Policy</a></li>

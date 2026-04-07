@@ -7,7 +7,7 @@ export default function Navbar() {
     <nav className="navbar" id="main-nav">
       <div className="navbar-inner">
         <Link href="/" className="navbar-logo">
-          Content<span>Factory</span>
+          F.<span>A.</span>C.<span>T.</span>S.
         </Link>
 
         <ul className="navbar-links">

@@ -1,39 +1,32 @@
-# Autonomous Content Factory
+# F.A.C.T.S. (Feature Analysis & Content Transformation System)
 
 ## The Problem
-Marketing teams and content creators often struggle to quickly transform raw source material into high-quality, multi-channel campaigns without hallucinating facts or losing brand voice. Manual drafting, fact-checking, and iterative editing across various formats (blogs, social threads, emails) is highly time-consuming, expensive, and prone to human error or inconsistencies. 
+Marketing teams and content creators face the significant challenge of quickly transforming complex raw source material into high-quality, multi-channel campaigns without hallucinating facts or losing brand consistency. Manual drafting, fact-checking, and iterative editing across various platforms is highly time-consuming, expensive, and alarmingly prone to systemic human error.
 
 ## The Solution
-The Autonomous Content Factory solves this by providing a high-performance, enterprise-grade content generation pipeline powered by a multi-agent orchestration system. It ingests source material, uses targeted AI agents to verify claims against real-world data, and dynamically crafts production-ready content formatted for distinct channels like blogs, email teasers, and social platforms. Featuring a high-fidelity real-time dashboard and robust Editor-in-Chief rejection loops, the system ensures verifiable accuracy and strict adherence to brand tone before the content ever reaches a human.
+**F.A.C.T.S.** is an autonomous, enterprise-level pipeline powered by a multi-agent orchestrated state machine that ingests source material to generate fully verified marketing campaigns. Our approach solves manual bottlenecks by isolating generation into specialized agent logic (Researcher, Copywriter, and Editor), establishing a cyclical, zero-hallucination feedback loop that evaluates all outputs mathematically against an extracted "Single Source of Truth."
+
+Key features include:
+* **Multi-Agent Orchestration**: LangGraph Directed Acyclic Graph (DAG) for isolated task execution.
+* **Tiered Model Inference**: Highly complex semantic tasks route to `llama-3.3-70b-versatile`, while cyclical generative tasks route to `llama-3.1-8b-instant`.
+* **Real-time Pipeline Telemetry**: WebSockets stream node transitions and execution logs live to the Next.js visualizer dashboard.
+* **Granular Analytics**: Records and visualizes global LLM token consumption synchronized to Indian Standard Time (IST).
 
 ## Tech Stack
-* **Programming Languages:** Python 3.12+, TypeScript, JavaScript, HTML, CSS
-* **Frameworks:** FastAPI (Backend), Next.js 15+ App Router (Frontend), React
-* **Databases:** PostgreSQL (with SQLAlchemy 2.0 & asyncpg), Redis (for Pub-Sub and Caching)
-* **APIs and Third-Party Tools:** LangGraph (Stateful multi-agent workflows), Groq API (Llama 3.3 70B & Llama 3.1 8B), WebSockets
+* **Programming languages:** Python 3.12+, TypeScript, JavaScript, HTML, CSS
+* **Frameworks:** React, Next.js 15+ App Router, FastAPI
+* **Databases:** PostgreSQL (with SQLAlchemy 2.0 & asyncpg), Redis (for Pub-Sub architecture)
+* **APIs or third-party tools:** LangGraph (Stateful workflow), Groq API (Inference Engine), WebSockets
 
 ## Setup Instructions
 
 ### Prerequisites
-Make sure you have Python 3.12+, Node.js 20+, PostgreSQL, and Redis installed and running on your system.
+Ensure Python 3.12+, Node.js 20+, PostgreSQL, and Redis are installed on your system.
 
-### 1. Backend Setup (`/server`)
-Navigate to the `/server` directory to configure the AI and API services:
+### Backend Setup (`/server`)
+Navigate to the `/server` directory to configure the core pipeline:
 
-1. **Create and activate a virtual environment:**
-   ```bash
-   python -m venv venv
-   # On Windows:
-   venv\Scripts\activate
-   # On macOS/Linux:
-   source venv/bin/activate
-   ```
-2. **Install dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-3. **Configure environment variables:**
-   Create a `.env` file in the `/server` directory and add the following keys:
+1. Create a `.env` file with your credentials:
    ```env
    DATABASE_URL=postgresql+asyncpg://user:password@localhost/dbname
    REDIS_URL=redis://localhost:6379/0
@@ -41,20 +34,26 @@ Navigate to the `/server` directory to configure the AI and API services:
    GROQ_PRO_MODEL=llama-3.3-70b-versatile
    GROQ_FLASH_MODEL=llama-3.1-8b-instant
    ```
-4. **Run the backend locally:**
+2. Install dependencies:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows use: venv\Scripts\activate
+   pip install -r requirements.txt
+   ```
+3. Run the project locally:
    ```bash
    uvicorn main:app --reload
    ```
 
-### 2. Frontend Setup (`/client`)
-Open a new terminal tab and navigate to the `/client` directory to run the Next.js UI:
+### Frontend Setup (`/client`)
+Open a new terminal tab and navigate to the `/client` directory:
 
-1. **Install dependencies:**
+1. Install dependencies:
    ```bash
    npm install
    ```
-2. **Run the frontend locally:**
+2. Run the project locally:
    ```bash
    npm run dev
    ```
-The user interface will now be available at `http://localhost:3000`.
+The dashboard interface will now be available at `http://localhost:3000`.

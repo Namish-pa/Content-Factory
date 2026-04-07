@@ -71,7 +71,7 @@ export default function ProcessingPage() {
   ]);
 
   const [logs, setLogs] = useState<TerminalLog[]>([
-    { time: getTimeStr(), type: "info", text: "Initializing Obsidian Factory Execution Engine..." },
+    { time: getTimeStr(), type: "info", text: "Initializing F.A.C.T.S. Execution Engine..." },
     { time: getTimeStr(), type: "info", text: `Campaign ID: ${id}` },
     { time: getTimeStr(), type: "action", text: "Connecting to pipeline WebSocket..." },
   ]);
@@ -284,7 +284,7 @@ export default function ProcessingPage() {
                 <span className="terminal-dot green" />
               </div>
               <span className="terminal-title">
-                factory@obsidian: ~/execution_logs/{id.slice(0, 8)}
+                system@facts: ~/execution_logs/{id.slice(0, 8)}
               </span>
             </div>
             <div className="terminal-header-right">
@@ -331,7 +331,7 @@ export default function ProcessingPage() {
       {/* Footer */}
       <footer className="processing-footer">
         <span className="processing-footer-left">
-          © 2024 Obsidian Intelligence. All rights reserved.
+          © 2024 F.A.C.T.S. Team. All rights reserved.
         </span>
         <ul className="processing-footer-links">
           <li><a href="#">Privacy Policy</a></li>

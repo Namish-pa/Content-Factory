@@ -16,7 +16,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "ContentFactory — Autonomous Intelligence for Content",
+  title: "F.A.C.T.S. — Feature Analysis & Content Transformation System",
   description:
     "Deploy AI-driven fact-checked, brand-faithful blog posts, emails, and social threads. Our autonomous pipeline produces production-ready content in seconds.",
 };

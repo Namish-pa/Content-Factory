@@ -480,7 +480,7 @@ export default function CampaignsPage() {
       {/* Footer */}
       <footer className="campaigns-footer">
         <span className="campaigns-footer-left">
-          © 2024 Obsidian Intelligence. All rights reserved.
+          © 2024 F.A.C.T.S. Team. All rights reserved.
         </span>
         <ul className="campaigns-footer-center">
           <li><a href="#">Privacy Policy</a></li>

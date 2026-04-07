@@ -130,7 +130,7 @@ export default function NewCampaignPage() {
       {/* Top Bar */}
       <header className="new-campaign-topbar" id="new-campaign-topbar">
         <div className="new-campaign-topbar-brand">
-          <span>Obsidian</span> Factory
+          <span>F.</span>A.<span>C.</span>T.<span>S.</span>
         </div>
 
         <ul className="new-campaign-topbar-links">
@@ -171,7 +171,7 @@ export default function NewCampaignPage() {
             </h1>
             <p>
               Define the parameters for your autonomous engine. Provide the source
-              material, and our Obsidian core will refine it into high-impact
+              material, and our F.A.C.T.S. core will refine it into high-impact
               digital assets.
             </p>
 
@@ -367,7 +367,7 @@ export default function NewCampaignPage() {
         {/* Footer */}
         <footer className="new-campaign-footer">
           <span className="new-campaign-footer-copy">
-            © 2024 Obsidian Intelligence. All rights reserved.
+            © 2024 F.A.C.T.S. Team. All rights reserved.
           </span>
           <ul className="new-campaign-footer-links">
             <li><a href="#">Privacy Policy</a></li>

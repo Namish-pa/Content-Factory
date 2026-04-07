@@ -14,14 +14,14 @@ const DEFAULT_BLOG = `In today's fast-paced digital world, maintaining an active
 
 But let's be honest. Doing this manually is exhausting.
 
-Enter the Autonomous Content Factory. By leveraging an orchestration of specialized AI agents, we can transform a single source document into a coordinated, multi-channel marketing campaign. The Value Proposition isn't just about saving time; it's about amplifying your team's creative potential without burning them out.
+Enter the F.A.C.T.S. By leveraging an orchestration of specialized AI agents, we can transform a single source document into a coordinated, multi-channel marketing campaign. The Value Proposition isn't just about saving time; it's about amplifying your team's creative potential without burning them out.
 
 Our platform utilizes a Fact-Check agent to guarantee accuracy, a Copywriter to synthesize the tone, and an Editor-in-Chief to eliminate hallucinations. The result? Uncompromised quality at machine speed.`;
 
 const DEFAULT_SOCIAL = [
   "Struggling to keep up with your content calendar? You're not alone. The demand for multi-channel marketing is breaking creative teams. 🧵 1/5",
   "Most AI tools just spit out raw text. It lacks tone, structure, and fact-checking. You still spend hours editing. That's a band-aid, not a solution. 2/5",
-  "Enter the Autonomous Content Factory! A multi-agent orchestrated system that builds your campaign for you. Fact-Check -> Copywrite -> Editor QA. 3/5",
+  "Enter the F.A.C.T.S! A multi-agent orchestrated system that builds your campaign for you. Fact-Check -> Copywrite -> Editor QA. 3/5",
   "Our Value Proposition? Amplifying your team's creative bandwidth without the burnout. Turn a single PDF into Blogs, Threads, and Emails in seconds. 4/5",
   "Stop acting like a robot so you can start acting like a creator again. Let the autonomous pipeline handle the heavy lifting. 🚀 5/5"
 ];
@@ -30,7 +30,7 @@ const DEFAULT_EMAIL = `Subject: Stop drowning in your content calendar.
 
 Hi team,
 
-We know how exhausting it is to maintain a blog, a Twitter thread, and a newsletter every single week manually. That's why we're so excited to introduce our new Autonomous Content Factory.
+We know how exhausting it is to maintain a blog, a Twitter thread, and a newsletter every single week manually. That's why we're so excited to introduce our new F.A.C.T.S.
 
 By utilizing multi-agent AI orchestration, our platform transforms a single source document into a comprehensive, verified, and beautifully formatted marketing campaign across all your platforms. Fact-checked by default, edited for tone, and ready to publish.
 

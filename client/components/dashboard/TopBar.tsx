@@ -3,7 +3,7 @@ export default function TopBar() {
     <header className="topbar" id="dashboard-topbar">
       <div className="topbar-left">
         <div className="topbar-brand">
-          Obsidian <span>Factory</span>
+          <span>F.</span>A.<span>C.</span>T.<span>S.</span>
         </div>
         <ul className="topbar-links">
           <li><a href="/">Home</a></li>

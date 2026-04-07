@@ -6,9 +6,8 @@ export default function Hero() {
       <div className="container">
         <div className="hero-content">
           <h1>
-            Autonomous Intelligence
-            <br />
-            for the Modern Enterprise
+            Feature Analysis &<br />
+            Content Transformation System
           </h1>
           <p className="hero-subtitle">
             Deploy AI-driven fact-checked, brand-faithful blog posts, emails, and
