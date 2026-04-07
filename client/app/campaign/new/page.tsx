@@ -27,8 +27,18 @@ export default function NewCampaignPage() {
 
     try {
       const combined = getCombinedContent();
+      
       if (!combined) {
         setError("Please provide source material via file upload or text input.");
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Hard token limit check for Hackathon demo
+      const estimatedTokens = Math.ceil(combined.length / 4);
+      const MAX_TOKENS = 15000;
+      if (estimatedTokens > MAX_TOKENS) {
+        setError(`Out of tokens constraint: Your input is approximately ${estimatedTokens.toLocaleString()} tokens, which exceeds your available quota of ${MAX_TOKENS.toLocaleString()} tokens.`);
         setIsSubmitting(false);
         return;
       }
@@ -70,7 +80,15 @@ export default function NewCampaignPage() {
   };
 
   const handleFiles = (fileList: FileList) => {
+    setError(null); // Reset previous errors
+
     const accepted = Array.from(fileList).filter((f) => {
+      // Empty file check
+      if (f.size === 0) {
+        setError(`System Error: The file "${f.name}" is completely empty. Please provide a valid document.`);
+        return false;
+      }
+
       const ext = f.name.toLowerCase();
       return (
         ext.endsWith(".pdf") ||
@@ -84,6 +102,12 @@ export default function NewCampaignPage() {
       const reader = new FileReader();
       reader.onload = (e) => {
         const content = e.target?.result as string;
+        
+        if (!content || content.trim() === "") {
+           setError(`System Error: The contents of "${file.name}" are empty or unreadable.`);
+           return;
+        }
+
         setFiles((prev) => [
           ...prev,
           {
