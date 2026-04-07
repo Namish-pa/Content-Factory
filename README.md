@@ -1,5 +1,7 @@
 # F.A.C.T.S. (Feature Analysis & Content Transformation System)
 
+![Hero Image](client/public/hero.png)
+
 ## The Problem
 Marketing teams and content creators face the significant challenge of quickly transforming complex raw source material into high-quality, multi-channel campaigns without hallucinating facts or losing brand consistency. Manual drafting, fact-checking, and iterative editing across various platforms is highly time-consuming, expensive, and alarmingly prone to systemic human error.
 
@@ -11,6 +13,26 @@ Key features include:
 * **Tiered Model Inference**: Highly complex semantic tasks route to `llama-3.3-70b-versatile`, while cyclical generative tasks route to `llama-3.1-8b-instant`.
 * **Real-time Pipeline Telemetry**: WebSockets stream node transitions and execution logs live to the Next.js visualizer dashboard.
 * **Granular Analytics**: Records and visualizes global LLM token consumption synchronized to Indian Standard Time (IST).
+
+## Screenshots
+
+<p align="center">
+  <img src="client/public/screenshot-home.png" alt="Home Page" width="800"/>
+  <br/>
+  <em>Home Page</em>
+</p>
+
+<p align="center">
+  <img src="client/public/screenshot-new-campaign.png" alt="New Campaign" width="800"/>
+  <br/>
+  <em>New Campaign Configuration</em>
+</p>
+
+<p align="center">
+  <img src="client/public/screenshot-dashboard.png" alt="Dashboard" width="800"/>
+  <br/>
+  <em>Live Telemetry Dashboard</em>
+</p>
 
 ## Tech Stack
 * **Programming languages:** Python 3.12+, TypeScript, JavaScript, HTML, CSS
